@@ -1,0 +1,32 @@
+services:
+  art-db:
+    image: mongo:latest
+    container_name: art-movements-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - art-network
+
+  art-api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: art-movements-api
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URL=mongodb://art-db:27017/art_movements
+      - PORT=3000
+    depends_on:
+      - art-db
+    networks:
+      - art-network
+
+networks:
+  art-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
