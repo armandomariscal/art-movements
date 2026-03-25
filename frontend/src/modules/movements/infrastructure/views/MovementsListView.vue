@@ -10,7 +10,11 @@
         </p>
       </div>
 
-      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div v-if="loading" class="text-center py-10 text-slate-500 italic">
+        Consultando la API de movimientos...
+      </div>
+
+      <div v-else class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <div 
           v-for="movement in movements" 
           :key="movement.id"
@@ -42,26 +46,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { fetchMovements } from '../MovementService';
+import type { Movement } from '../../domain/Movement';
 
-const movements = ref([
-  {
-    id: 1,
-    name: 'Renacimiento',
-    period: 'S. XV - XVI',
-    description: 'Revalorización de la antigüedad clásica y el humanismo.'
-  },
-  {
-    id: 2,
-    name: 'Barroco',
-    period: 'S. XVII - XVIII',
-    description: 'Ornamentación excesiva, dramatismo y contrastes de luz.'
-  },
-  {
-    id: 3,
-    name: 'Rococó',
-    period: 'S. XVIII',
-    description: 'Elegancia, colores claros y temas de la vida aristocrática.'
+const movements = ref<Movement[]>([]);
+const loading = ref(true);
+
+onMounted(async () => {
+  try {
+    movements.value = await fetchMovements();
+  } catch (error) {
+    console.error("No se pudo conectar con el servidor:", error);
+  } finally {
+    loading.value = false;
   }
-]);
+});
 </script>
