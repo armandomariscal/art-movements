@@ -3,7 +3,10 @@ services:
     image: mongo:latest
     container_name: art-movements-db
     ports:
-      - "27017:27017"
+      - "${DB_PORT}:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASS}
     volumes:
       - mongo-data:/data/db
     networks:
@@ -15,10 +18,10 @@ services:
       dockerfile: Dockerfile
     container_name: art-movements-api
     ports:
-      - "3000:3000"
+      - "${API_PORT}:${API_PORT}"
     environment:
-      - MONGO_URL=mongodb://art-db:27017/art_movements
-      - PORT=3000
+      - MONGO_URL=${MONGO_URL}
+      - PORT=${API_PORT}
     depends_on:
       - art-db
     networks:
