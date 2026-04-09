@@ -1,0 +1,26 @@
+{
+  "name": "art-movements",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test:e2e": "playwright test",
+    "test:api": "playwright test tests/api",
+    "test:ui": "playwright test tests/e2e"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/armandomariscal/art-movements.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/armandomariscal/art-movements/issues"
+  },
+  "homepage": "https://github.com/armandomariscal/art-movements#readme",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.59.1",
+    "@types/node": "^25.5.2"
+  }
+}
