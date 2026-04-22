@@ -1,7 +1,6 @@
 {
   "name": "art-movements",
   "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
     "test:e2e": "playwright test",
     "test:api": "playwright test tests/api",
