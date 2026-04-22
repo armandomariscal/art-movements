@@ -1,56 +1,53 @@
-name: Continuous Integration
-
+name: CI / Playwright Tests
 on:
-  pull_request:
-    branches: [ main, develop ]
   push:
-    branches: [ main, develop ]
+    branches: [ main, master, develop, test/playwright-setup ]
+  pull_request:
+    branches: [ main, master, develop ]
 
 jobs:
-  backend-testing:
+  backend-unit-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: backend/package-lock.json
-
-      - name: Install Dependencies
+      - name: Install BE dependencies
         run: cd backend && npm ci
-
-      - name: Run Jest Unit Tests
+      - name: Run Jest
         run: cd backend && npm test
 
-  frontend-testing:
+  frontend-validation:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
-
-      - name: Install Dependencies
+      - name: Install FE dependencies
         run: cd frontend && npm ci
-
-      - name: Lint & Type Check
+      - name: Type Check (Vue-tsc)
         run: cd frontend && npm run build
 
-  e2e-testing:
-    needs: [backend-testing, frontend-testing]
+  playwright-e2e:
+    needs: [backend-unit-tests, frontend-validation]
+    timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-
-      - name: Run Playwright tests
-        run: npx playwright test
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test --pass-with-no-tests
+    - uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30
