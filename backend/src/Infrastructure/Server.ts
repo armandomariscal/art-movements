@@ -1,11 +1,17 @@
 import 'dotenv/config';
 import express from 'express';
+import cors from 'cors';
 import { MovementController } from './Controllers/MovementController.js';
 
 const app = express();
 const movementController = new MovementController();
 
-app.get('/movements', movementController.getAll);
+// Middlewares
+app.use(cors());
+app.use(express.json());
+
+// Routes
+app.get('/api/movements', movementController.getAll);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

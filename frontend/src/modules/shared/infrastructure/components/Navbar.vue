@@ -9,7 +9,9 @@
         </div>
         
         <div class="hidden md:flex space-x-8 text-gray-600 font-medium">
-          <a href="#" class="hover:text-indigo-600 transition">Movimientos</a>
+          <router-link to="/movements" class="text-sm font-semibold text-slate-900 hover:text-indigo-600">
+            Movimientos
+          </router-link>
           <a href="#" class="hover:text-indigo-600 transition">Artistas</a>
           <a href="#" class="hover:text-indigo-600 transition">Exposiciones</a>
         </div>
