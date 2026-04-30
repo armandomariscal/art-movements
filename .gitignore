@@ -1,18 +1,36 @@
-# Dependencias
+# Dependencies
 node_modules/
 dist/
+dist-ssr/
 
-# Variables de entorno
+# Environment variables
 .env
-.env.local
+.env.*
+!.env.example
 
-# Docker & Logs
+# Logs
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# IDEs
+.vscode/
+.idea/
+
+# Operating system
+.DS_Store
+Thumbs.db
+
+# Docker
 docker-compose.override.yml
 
 # Playwright
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-/playwright/.auth/
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+playwright/.auth/
+
+# Coverage
+coverage/
