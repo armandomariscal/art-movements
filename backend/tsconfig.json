@@ -10,6 +10,7 @@
     "esModuleInterop": true,
     "verbatimModuleSyntax": false, 
     "sourceMap": true,
+    "isolatedModules": true,
     "declaration": true
   },
   "include": ["src/**/*"],
